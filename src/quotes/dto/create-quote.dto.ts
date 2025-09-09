@@ -1,37 +1,39 @@
-import { IsNumber, IsNotEmpty, IsString, IsEmail, IsEnum, IsOptional } from 'class-validator';
-import { quoteStatus } from '../entities/quote.entity';
+import { IsString, IsNotEmpty, IsEmail, IsOptional, IsArray, IsObject } from 'class-validator';
 
 export class CreateQuoteDto {
-  @IsNumber()
-  @IsNotEmpty()
-  user_id: number;
-  @IsNumber()
-  @IsNotEmpty()
-  estimated_premium: number;
+    @IsString()
+    @IsNotEmpty()
+    name: string;
 
-  @IsString()
-  @IsNotEmpty()
-  name: string;
+    @IsEmail()
+    @IsNotEmpty()
+    email: string;
 
-  @IsString()
-  @IsNotEmpty()
-  details: string;
+    @IsString()
+    @IsNotEmpty()
+    phone: string;
 
+    @IsString()
+    @IsNotEmpty()
+    product: string; // insurance product title
 
-  @IsString()
-  @IsNotEmpty()
-  service_type: string;
+    @IsString()
+    @IsOptional()
+    company?: string;
 
-  @IsEmail()
-  @IsNotEmpty()
-  email: string;
+    @IsString()
+    @IsOptional()
+    country?: string;
 
-  @IsString()
-  @IsNotEmpty()
-  phone: string;
+    @IsString()
+    @IsOptional()
+    message?: string;
 
-  @IsEnum(quoteStatus)
-  @IsOptional()
-  status?: quoteStatus;
+    @IsArray()
+    @IsOptional()
+    attachments?: string[];
 
+    @IsObject()
+    @IsOptional()
+    extra?: Record<string, any>; // dynamic fields for each form
 }

@@ -32,7 +32,7 @@ export class ClaimsService {
         ...createClaimDto,
         // Ensure types align with entity
         incident_date: new Date(createClaimDto.incident_date as unknown as string),
-        submitter_phone: String(createClaimDto.submitter_phone),
+        phone: String(createClaimDto.phone),
       } as Partial<Claim>;
 
       const newClaim = this.claimRepository.create(preparedClaim);
@@ -114,8 +114,8 @@ export class ClaimsService {
           updateClaimDto.incident_date as unknown as string,
         );
       }
-      if (updateClaimDto.submitter_phone !== undefined) {
-        preparedUpdate.submitter_phone = String(updateClaimDto.submitter_phone);
+      if (updateClaimDto.phone !== undefined) {
+        preparedUpdate.phone = String(updateClaimDto.phone);
       }
 
       const updatedClaim = await this.claimRepository.save({

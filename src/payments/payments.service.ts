@@ -72,4 +72,18 @@ export class PaymentsService {
       return { success: false, message: `Failed to delete payment with id ${id}`, error: error.message };
     }
   }
+
+  // Temporary verification stub – replace with provider API verification as needed
+  async verifyByReference(reference: string, provider?: string): Promise<ApiResponse<{ reference: string; provider?: string }>> {
+    try {
+      // TODO: Integrate with Paystack (or other provider) verify endpoint using server secret
+      return {
+        success: true,
+        message: 'Verification callback received',
+        data: { reference, provider },
+      };
+    } catch (error) {
+      return { success: false, message: 'Verification failed', error: (error as Error).message };
+    }
+  }
 }

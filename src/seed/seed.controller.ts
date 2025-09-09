@@ -61,7 +61,7 @@ export class SeedController {
   @HttpCode(HttpStatus.OK)
   async seedConsultations() {
     this.logger.log('Seed consultations endpoint called');
-    return this.seedService.seedConsultations();
+    // return this.seedService.seedConsultations();
   }
 
   @Post('diaspora-requests')

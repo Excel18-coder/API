@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, ParseIntPipe, Put } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, ParseIntPipe, Put, Query } from '@nestjs/common';
 import { PaymentsService } from './payments.service';
 import { CreatePaymentDto } from './dto/create-payment.dto';
 import { UpdatePaymentDto } from './dto/update-payment.dto';
@@ -23,6 +23,19 @@ export class PaymentsController {
   @Get()
   findAll(): Promise<ApiResponse<Payment[]>> {
     return this.paymentsService.findAll();
+  }
+
+  // Paystack (or provider) callback/verification endpoint using query params
+  // MUST be before @Get(':id') to avoid route conflicts
+  @Get('callback')
+  verifyCallback(
+    @Query('reference') reference?: string,
+    @Query('trxref') trxref?: string,
+    @Query('ref') ref?: string,
+    @Query('provider') provider?: string,
+  ): Promise<ApiResponse<{ reference: string; provider?: string }>> {
+    const finalRef = reference || trxref || ref || '';
+    return this.paymentsService.verifyByReference(finalRef, provider);
   }
 
   @Get(':id')

@@ -1,9 +1,9 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { Quote, quoteStatus } from '../quotes/entities/quote.entity';
+import { Quote, } from '../quotes/entities/quote.entity';
 import { User, Role } from '../users/entities/user.entity';
-import { Consultation } from '../consultations/entities/consultation.entity';
+import { Consultation, consultType } from '../consultations/entities/consultation.entity';
 import { DiasporaRequest } from '../diaspora_requests/entities/diaspora_request.entity';
 import { OutsourcingRequest } from '../outsourcing_requests/entities/outsourcing_request.entity';
 import { Payment, paymentStatus } from '../payments/entities/payment.entity';
@@ -25,40 +25,32 @@ export class SeedService {
     private readonly outsourcingRepository: Repository<OutsourcingRequest>,
     @InjectRepository(Payment)
     private readonly paymentRepository: Repository<Payment>,
-  ) {}
+  ) { }
 
   async seedQuotes() {
     this.logger.log('Seeding quotes...');
     const samples: Partial<Quote>[] = [
       {
-        user_id: 1,
         name: 'Alice Johnson',
         email: 'alice@example.com',
         phone: '+254700111222',
-        details: 'Home insurance for 3-bedroom house',
-        service_type: 'Home Insurance',
-        estimated_premium: 1200.5,
-        status: quoteStatus.PENDING,
+        product: 'Home Insurance',
+        message: 'Home insurance for 3-bedroom house',
       },
       {
-        user_id: 2,
         name: 'Bob Smith',
         email: 'bob@example.com',
         phone: '+254700333444',
-        details: 'Comprehensive car insurance for 2019 sedan',
-        service_type: 'Auto Insurance',
-        estimated_premium: 850.0,
-        status: quoteStatus.IN_REVIEW,
+        product: 'Auto Insurance',
+        message: 'Comprehensive car insurance for 2019 sedan',
       },
       {
-        user_id: 3,
         name: 'Carol Lee',
         email: 'carol@example.com',
         phone: '+254700555666',
-        details: 'Health cover for family of four',
-        service_type: 'Health Insurance',
-        estimated_premium: 2100.0,
-        status: quoteStatus.APPROVED,
+        product: 'Health Insurance',
+        message: 'Health cover for family of four',
+        // status: quoteStatus.APPROVED,
       },
     ];
 
@@ -99,51 +91,45 @@ export class SeedService {
     return { success: true, count: saved.length };
   }
 
-  async seedConsultations() {
-    this.logger.log('Seeding consultations...');
-    const items: Partial<Consultation>[] = [
-      {
-        user_id: 1,
-        name: 'Alice Johnson',
-        email: 'alice@example.com',
-        phone: '+254700111222',
-        country: 'Kenya',
-        timezone: 'Africa/Nairobi',
-        service_interest: 'Cloud Migration',
-        service_type: 'Consulting',
-        scheduled_at: new Date(),
-        status: 'pending',
-        meeting_link: 'https://meet.example.com/alice',
-        duration: 60,
-        notes: 'Initial discussion about scope',
-      },
-      {
-        user_id: 2,
-        name: 'Bob Smith',
-        email: 'bob@example.com',
-        phone: '+254700333444',
-        country: 'Kenya',
-        timezone: 'Africa/Nairobi',
-        service_interest: 'Security Audit',
-        service_type: 'Audit',
-        scheduled_at: new Date(Date.now() + 86400000),
-        status: 'pending',
-        meeting_link: 'https://meet.example.com/bob',
-        duration: 45,
-        notes: null,
-      },
-    ];
-    const created = this.consultationRepository.create(items);
-    const saved = await this.consultationRepository.save(created);
-    this.logger.log(`Seeded ${saved.length} consultations`);
-    return { success: true, count: saved.length };
-  }
+  // async seedConsultations() {
+  //   this.logger.log('Seeding consultations...');
+  //   const items: Partial<Consultation>[] = [
+  //     {
+  //       user_id: 1,
+  //       name: 'Alice Johnson',
+  //       // email: 'alice@example.com',
+  //       phone: '+254700111222',
+  //       country: 'Kenya',
+  //       timezone: 'Africa/Nairobi',
+  //       service_interest: 'Cloud Migration',
+  //       consult_type: consultType.ONLINE,
+  //       date: new Date(),
+  //       // status, meeting_link, duration, notes are not in entity
+  //     },
+  //     {
+  //       user_id: 2,
+  //       name: 'Bob Smith',
+  //       // email: 'bob@example.com',
+  //       phone: '+254700333444',
+  //       country: 'Kenya',
+  //       timezone: 'Africa/Nairobi',
+  //       service_interest: 'Security Audit',
+  //       consult_type: consultType.ONLINE,
+  //       date: new Date(Date.now() + 86400000),
+  //       // status, meeting_link, duration, notes are not in entity
+  //     },
+  //   ];
+  //   const created = this.consultationRepository.create(items);
+  //   const saved = await this.consultationRepository.save(created);
+  //   this.logger.log(`Seeded ${saved.length} consultations`);
+  //   return { success: true, count: saved.length };
+  // }
 
   async seedAll() {
-    const [users, quotes, consultations, diaspora, outsourcing, payments] = await Promise.all([
+    const [users, quotes, consultations, diaspora, outsourcing,] = await Promise.all([
       this.seedUsers(),
       this.seedQuotes(),
-      this.seedConsultations(),
+      // this.seedConsultations(),
       this.seedDiasporaRequests(),
       this.seedOutsourcingRequests(),
       this.seedPayments(),
@@ -155,7 +141,7 @@ export class SeedService {
       consultations,
       diaspora,
       outsourcing,
-      payments,
+      // payments,
     };
   }
 

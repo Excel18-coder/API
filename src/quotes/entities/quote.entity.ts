@@ -1,51 +1,37 @@
-import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn } from 'typeorm';
-
-export enum quoteStatus {
-  PENDING = 'Pending',
-  APPROVED = 'Approved',
-  REJECTED = 'Rejected',
-  IN_REVIEW = 'In Review',
-  CLOSED = 'Closed',
-}
+import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn } from 'typeorm';
 
 @Entity('quotes')
 export class Quote {
-  @PrimaryGeneratedColumn()
-  id: number;
+    @PrimaryGeneratedColumn()
+    id: number;
 
-  @Column()
-  user_id: number;
+    @Column({ length: 255 })
+    name: string;
 
-  @Column()
-  // Removed policy_number for quotes
-  // policy_number: number;
+    @Column({ length: 255 })
+    email: string;
 
-  @Column()
-  name: string;
+    @Column({ length: 50 })
+    phone: string;
 
-  @Column()
-  email: string;
-  @Column()
-  phone: string;
-  @Column()
-  details: string;
+    @Column({ length: 255, nullable: true })
+    product: string;
 
-  @Column()
-  service_type: string;
+    @Column({ length: 255, nullable: true })
+    company?: string;
 
-  @Column('decimal', { precision: 12, scale: 2, nullable: true })
-  estimated_premium: number ;
+    @Column({ length: 100, nullable: true })
+    country?: string;
 
-  @Column({
-    type: 'enum',
-    enum: quoteStatus,
-    default: quoteStatus.PENDING,
-  })
-  status: quoteStatus;
+    @Column({ type: 'text', nullable: true })
+    message?: string;
 
-  @CreateDateColumn()
-  created_at: Date;
+    @Column('simple-array', { nullable: true })
+    attachments?: string[];
 
-  @UpdateDateColumn()
-  updated_at: Date;
+    @Column({ type: 'json', nullable: true })
+    extra?: Record<string, any>;
+
+    @CreateDateColumn()
+    created_at: Date;
 }

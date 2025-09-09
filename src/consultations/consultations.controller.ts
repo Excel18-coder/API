@@ -17,12 +17,20 @@ export class ConsultationsController {
 
   @Post()
   create(@Body() createConsultationDto: CreateConsultationDto): Promise<ApiResponse<Consultation>> {
+    console.log('📋 POST /consultations endpoint called with data:', createConsultationDto);
     return this.consultationsService.create(createConsultationDto);
   }
 
   @Get()
   findAll(): Promise<ApiResponse<Consultation[]>> {
+    console.log('📋 GET /consultations endpoint called');
     return this.consultationsService.findAll();
+  }
+
+  @Get('test')
+  async testConnection(): Promise<ApiResponse<{ message: string; count: number }>> {
+    console.log('📋 GET /consultations/test endpoint called');
+    return this.consultationsService.testConnection();
   }
 
   @Get(':id')

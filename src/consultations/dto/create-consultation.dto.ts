@@ -1,56 +1,36 @@
-import { IsNumber, IsNotEmpty, IsString, IsEmail, IsDateString, IsOptional } from 'class-validator';
-import { consultationStatus } from '../entities/consultation.entity';
+import { IsNotEmpty, IsString, IsOptional, IsEnum, IsDateString } from 'class-validator';
+import { consultType } from '../entities/consultation.entity';
 
 export class CreateConsultationDto {
-  @IsNumber()
-  @IsNotEmpty()
-  user_id: number;
-
   @IsString()
   @IsNotEmpty()
-  name: string;
-
-  @IsEmail()
-  @IsNotEmpty()
-  email: string;
+  full_name: string;
 
   @IsString()
   @IsNotEmpty()
   phone: string;
 
-  @IsString()
+  @IsEnum(consultType)
   @IsNotEmpty()
-  country: string;
+  consult_type: consultType;
 
   @IsString()
   @IsNotEmpty()
-  timezone: string;
+  date: string;
 
   @IsString()
   @IsNotEmpty()
-  service_interest: string;
+  time: string;
 
-  @IsString()
-  @IsNotEmpty()
-  service_type: string;
-
-  @IsDateString()
-  @IsNotEmpty()
-  scheduled_at: string;
-
-  @IsString()
   @IsOptional()
-  status?: consultationStatus;
-
   @IsString()
-  @IsOptional()
-  meeting_link?: string | null;
+  message?: string;
 
-  @IsNumber()
   @IsOptional()
-  duration?: number | null;
-
   @IsString()
+  serviceType?: string;
+
   @IsOptional()
-  notes?: string | null;
+  @IsString()
+  status?: string;
 }

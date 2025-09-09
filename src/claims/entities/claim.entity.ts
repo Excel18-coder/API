@@ -12,33 +12,65 @@ export  enum claimStatus {
   IN_REVIEW = 'In Review',
   CLOSED = 'Closed',
 }
+export enum ClaimType {
+  MOTOR = 'Motor',
+  HEALTH = 'Health',
+  PROPERTY = 'Property',
+  TRAVEL = 'Travel',
+  LIFE = 'Life',
+  PUBLIC_LIABILITY = 'Public liability',
+  FIDELITY_GUARANTEE = 'Fidelity guarantee',
+  WORKSMEN_COMPENSATION_ACCIDENT = 'Worksmen compensation accident',
+  WINDSCREEN_AND_WINDOW_DAMAGE = 'Windscreen and window damage',
+  MOTOR_ENTERTAINMENT = 'Motor entertainment',
+  MOTOR_THEFT = 'Motor theft',
+}
 
 @Entity('claims')
 export class Claim {
   @PrimaryGeneratedColumn()
   Id: number;
-  @Column()
-  user_id: number;
+
+  // @Column()
+  // user_id: number;
+
   @Column()
   policy_number: number;
-  @Column()
-  claim_type: string;
+
+  @Column({ type: 'enum', enum: ClaimType })
+  claim_type: ClaimType;
+
   @Column()
   incident_date: Date;
+
   @Column()
   estimated_loss: number;
+
   @Column()
   description: string;
-  @Column()
+
+  @Column({ type: 'enum', enum: claimStatus, default: claimStatus.PENDING })
   status: claimStatus;
+
   @Column()
-  submitter_email: string;
+  email: string;
+
   @Column()
-  submitter_name: string;
+  first_name: string;
+
   @Column()
-  submitter_phone: string;
+  last_name: string;
+
+  @Column()
+  phone: string;
+
   @CreateDateColumn()
   created_at: Date;
+
   @UpdateDateColumn()
   updated_at: Date;
+
+  @Column("simple-array")
+  supporting_documents: string[];
 }
+ 

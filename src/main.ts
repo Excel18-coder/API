@@ -1,6 +1,7 @@
 import { NestFactory } from '@nestjs/core';
 import { ValidationPipe } from '@nestjs/common';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
+import type { NestExpressApplication } from '@nestjs/platform-express';
 import { ConfigService } from '@nestjs/config';
 import { join } from 'path';
 import * as express from 'express';
@@ -11,7 +12,9 @@ import { UsersModule } from './users/users.module';
 import { AuthModule } from './auth/auth.module';
 
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule);
+  const app = await NestFactory.create<NestExpressApplication>(AppModule, {
+    rawBody: true,
+  });
   // Enable Helmet for security
   app.use(
     helmet({
@@ -29,13 +32,7 @@ async function bootstrap() {
   // Enable CORS
   // Enable CORS
   app.enableCors({
-    origin: [
-      process.env.CORS_ORIGIN ||
-        'http://localhost:8000' ||
-        'https://groceries-api-m1sq.onrender.com',
-      'http://localhost:3000', // Add your frontend URL
-      'http://localhost:5173',
-    ],
+    origin: ['*'], // Allow all origins - adjust as needed for production
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
     allowedHeaders: ['Content-Type', 'Accept', 'Authorization'],
     credentials: true,

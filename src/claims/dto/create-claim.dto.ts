@@ -1,16 +1,17 @@
-import { IsNumber, IsNotEmpty, IsString, IsEmail, IsDateString } from 'class-validator';
+import { IsNumber, IsNotEmpty, IsString, IsEmail, IsDateString, IsIn, isEnum, IsEnum, IsArray } from 'class-validator';
+import { ClaimType } from '../entities/claim.entity';
 export class CreateClaimDto {
-  @IsNumber()
-  @IsNotEmpty()
-  user_id: number;
+  // @IsNumber()
+  // @IsNotEmpty()
+  // user_id: number;
 
   @IsNumber()
   @IsNotEmpty()
   policy_number: number;
 
-  @IsString()
+  @IsEnum(ClaimType)
   @IsNotEmpty()
-  claim_type: string;
+  claim_type: ClaimType;
 
   @IsDateString()
   @IsNotEmpty()
@@ -24,20 +25,26 @@ export class CreateClaimDto {
   @IsNotEmpty()
   description: string;
 
-  @IsString()
-  @IsNotEmpty()
-  status: string;
+  // @IsString()
+  // @IsNotEmpty()
+  // status: string;
 
   @IsEmail()
   @IsNotEmpty()
-  submitter_email: string;
+  email: string;
 
   @IsString()
   @IsNotEmpty()
-  submitter_name: string;
+  first_name: string;
 
   @IsString()
   @IsNotEmpty()
-  submitter_phone: string;
+  last_name: string;
+
+  @IsString()
+  @IsNotEmpty()
+  phone: string;
+  @IsArray()
+  supporting_documents:string[]
   
 }

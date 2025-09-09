@@ -73,14 +73,17 @@ Content-Type: application/json
 {
   "user_id": 19,
   "policy_number": 123456,
-  "claim_type": "Accident",
+  "claim_type": "Motor",
   "incident_date": "2023-10-01",
   "estimated_loss": 5000,
   "description": "Car accident on highway",
   "status": "Pending",
-  "submitter_name": "Ten",
-  "submitter_phone": "+254700123456",
-  "submitter_email": "ten@example.com"
+  "first_name": "Ten",
+  "last_name": "Doe",
+  "phone": "+254700123456",
+  "email": "ten@example.com",
+"supporting_documents":[""]
+
 
 
 } 
