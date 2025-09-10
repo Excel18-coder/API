@@ -13,7 +13,7 @@ interface ApiResponse<T = any> {
 
 @Controller('quotes')
 export class QuotesController {
-  constructor(private readonly quotesService: QuotesService) {}
+  constructor(private readonly quotesService: QuotesService) { }
 
   @Post()
   create(@Body() createQuoteDto: CreateQuoteDto): Promise<ApiResponse<Quote>> {
@@ -39,7 +39,7 @@ export class QuotesController {
   }
 
   @Delete(':id')
-  remove(@Param('id', ParseIntPipe) id: number): Promise<ApiResponse<null>> {
+  remove(@Param('id', ParseIntPipe) id: number): Promise<ApiResponse<void>> {
     return this.quotesService.remove(id);
   }
 }

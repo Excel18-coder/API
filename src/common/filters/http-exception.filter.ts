@@ -33,11 +33,11 @@ export class AllExceptionsFilter implements ExceptionFilter {
       } else if (typeof exceptionResponse === 'object') {
         // If validation errors are present, include them in the response
         const responseObj = exceptionResponse as Record<string, any>;
-        if (Array.isArray(responseObj.message)) {
-          message = responseObj.message;
-        } else {
-          message = responseObj.message || exceptionResponse;
-        }
+        message = {
+          error: responseObj.error || exception.name,
+          message: responseObj.message || 'Validation failed',
+          details: Array.isArray(responseObj.message) ? responseObj.message : [responseObj.message]
+        };
         error = responseObj.error || exception.name;
       }
     } else if (exception instanceof QueryFailedError) {

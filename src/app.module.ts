@@ -8,7 +8,7 @@ import { APP_GUARD } from '@nestjs/core';
 
 import { UsersModule } from './users/users.module';
 import { DatabaseModule } from './database/database.module';
-import { SeedModule } from './seed/seed.module';
+// import { SeedModule } from './seed/seed.module';
 import { AuthModule } from './auth/auth.module';
 import { ThrottlerModule } from '@nestjs/throttler';
 import { CustomThrottlerGuard } from './rate limiter/throttler.guard';
@@ -20,6 +20,7 @@ import { ConsultationsModule } from './consultations/consultations.module';
 import { DiasporaRequestsModule } from './diaspora_requests/diaspora_requests.module';
 import { OutsourcingRequestsModule } from './outsourcing_requests/outsourcing_requests.module';
 import { PaymentsModule } from './payments/payments.module';
+import { BookingConsultantsModule } from './booking-consultants/booking-consultants.module';
 
 @Module({
   imports: [
@@ -37,7 +38,7 @@ import { PaymentsModule } from './payments/payments.module';
         limit: 20, // 20 requests per minute
       },
     ]),
-    SeedModule,
+    // SeedModule,
 
     ClaimsModule,
 
@@ -50,6 +51,8 @@ import { PaymentsModule } from './payments/payments.module';
     OutsourcingRequestsModule,
 
     PaymentsModule,
+
+    BookingConsultantsModule,
   ],
   controllers: [AppController],
   providers: [

@@ -1,9 +1,12 @@
-import { IsNumber, IsNotEmpty, IsString, IsEmail, IsOptional, IsObject } from 'class-validator';
+import { IsNumber, IsNotEmpty, IsString, IsEmail, IsOptional, IsObject, IsEnum } from 'class-validator';
 
+import { NatureOfOutsourcing } from '../entities/outsourcing_request.entity';
+import { BudgetRange } from '../entities/outsourcing_request.entity';
+import { OutsourcingService } from '../entities/outsourcing_request.entity';
 export class CreateOutsourcingRequestDto {
-  @IsNumber()
-  @IsNotEmpty()
-  user_id: number;
+  // @IsNumber()
+  // @IsNotEmpty()
+  // user_id: number;
 
   @IsString()
   @IsNotEmpty()
@@ -25,19 +28,17 @@ export class CreateOutsourcingRequestDto {
   @IsNotEmpty()
   email: string;
 
-  @IsObject()
+  // @IsEnum(OutsourcingService)
   @IsOptional()
-  services?: Record<string, unknown>;
+  services: string[];
 
-  @IsString()
+  @IsEnum(NatureOfOutsourcing)
   @IsNotEmpty()
-  nature_of_outsourcing: string;
+  nature_of_outsourcing:NatureOfOutsourcing ; 
 
-  @IsString()
+  @IsEnum(BudgetRange)
   @IsNotEmpty()
-  budget_range: string;
+  budget_range: BudgetRange;
 
-  @IsString()
-  @IsOptional()
-  status?: string;
+  
 }
