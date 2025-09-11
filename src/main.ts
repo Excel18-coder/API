@@ -67,29 +67,12 @@ async function bootstrap() {
   app.setGlobalPrefix('api/v1');
   // swagger documentation
   const config = new DocumentBuilder()
-    .setTitle('Olive Groceries API')
-    .setDescription(
-      `Olive Groceries API documentation is an Api  basically shows the events that happens as the user books and pay for the goroceries after ordering. Also the user is able to track their orders and payments seamlessly.
-    This API is designed to provide a comprehensive solution for managing grocery orders, payments, and user interactions. 
-    It includes features such as user authentication, order management, payment processing, and customer support.
-   ##Resources
-    The resources include:
-    - **Users**: Manage user accounts, authentication, and roles.
-    - **Products**: Manage grocery products, including categories and details.
-    - **Orders**: Handle order creation, updates, and tracking.
-    - **Payments**: Process payments for orders, including payment methods and statuses.
-    - **Feedbacks**: Collect and manage user feedback on products and services.
-    - **Customers Support**: Provide support for users through tickets and responses.
-    - **Location**: Manage delivery locations and addresses.
-    - **Seed**: Populate the database with initial data for testing and development.
-      The API is built using NestJS, a progressive Node.js framework, and uses TypeORM for database interactions with PostgreSQL.
-      The API is designed to be secure, scalable, and easy to use, with comprehensive documentation and examples for developers.
-      `,
-    )
+    .setTitle('Gallo API')
+  
     .setVersion('1.0')
     .addBearerAuth()
     .addServer('http://localhost:8000', 'Local Development Server')
-    .addServer('https://groceries-api-m1sq.onrender.com', 'Production Server')
+    .addServer('https://gallo-api.com', 'Production Server')
     .build();
   const document = SwaggerModule.createDocument(app, config, {
     include: [UsersModule, AuthModule],
