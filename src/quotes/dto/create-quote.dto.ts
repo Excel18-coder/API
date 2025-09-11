@@ -32,10 +32,10 @@ export class CreateQuoteDto {
     @IsNotEmpty()
     selectedProduct: string;
 
-    // Vehicle Information
+
     @IsString()
-    @IsNotEmpty()
-    vehicleType: string;
+    @IsOptional()
+    vehicleType?: string;
 
     @Transform(({ value }) => {
         if (typeof value === 'string') {
@@ -44,16 +44,32 @@ export class CreateQuoteDto {
         return typeof value === 'number' ? value : null;
     })
     @IsNumber()
-    @IsNotEmpty()
-    vehicleValue: number;
+    @IsOptional()
+    vehicleValue?: number;
 
     @IsString()
-    @IsNotEmpty()
-    registrationNumber: string;
+    @IsOptional()
+    registrationNumber?: string;
 
     @IsString()
-    @IsNotEmpty()
-    engineCapacity: string;
+    @IsOptional()
+    engineCapacity?: string;
+
+    @IsString()
+    @IsOptional()
+    propertyType?: string;
+
+    @IsString()
+    @IsOptional()
+    propertyValue?: string;
+
+    @IsString()
+    @IsOptional()
+    constructionType?: string;
+
+    @IsString()
+    @IsOptional()
+    occupancy?: string;
 
     // Quote Details
     @IsString()
@@ -68,7 +84,6 @@ export class CreateQuoteDto {
     @IsOptional()
     details?: string;
 
-    // Contact Preferences
     @IsString()
     @IsNotEmpty()
     contactMethod: string;
@@ -77,7 +92,6 @@ export class CreateQuoteDto {
     @IsNotEmpty()
     bestTime: string;
 
-    // Document and Agreement
     @IsObject()
     @IsOptional()
     document?: Record<string, any>;
@@ -86,7 +100,6 @@ export class CreateQuoteDto {
     @IsNotEmpty()
     terms: boolean;
 
-    // Status and Timestamps
     @IsString()
     @IsOptional()
     status?: string;
