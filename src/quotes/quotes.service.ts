@@ -19,13 +19,15 @@ export class QuotesService {
     private readonly quoteRepository: Repository<Quote>,
   ) { }
 
-  private generateReference(productType: string): string {
+  private generateReference(product: string): string {
     const date = new Date();
     const year = date.getFullYear().toString().slice(-2);
     const month = (date.getMonth() + 1).toString().padStart(2, '0');
     const day = date.getDate().toString().padStart(2, '0');
     const random = Math.floor(Math.random() * 10000).toString().padStart(4, '0');
-    const prefix = productType.slice(0, 3).toUpperCase();
+
+    // Use product type to create prefix (Motor -> MOT)
+    const prefix = product.split(' ').map(word => word.charAt(0).toUpperCase()).join('').slice(0, 3);
 
     return `${prefix}${year}${month}${day}${random}`;
   }
@@ -44,68 +46,47 @@ export class QuotesService {
 
   async create(createQuoteDto: CreateQuoteDto): Promise<ApiResponse<Quote>> {
     try {
-      // Generate reference number
-      const reference = this.generateReference(createQuoteDto.productType);
+      // Generate reference number based on product
+      const reference = this.generateReference(createQuoteDto.product);
 
       // Process the data
       const processedData = { ...createQuoteDto };
 
-      // Process dates if they exist
-      const dateFields: (keyof CreateQuoteDto)[] = [
-        'date',
-        'periodFrom',
-        'periodTo',
-        'policyFrom',
-        'policyTo',
-        'dateCommencementCurrent',
-        'dateCommencementInitial'
-      ];
+      // Process timestamp if provided, otherwise use current timestamp
+      const timestamp = processedData.timestamp
+        ? this.processDateField(processedData.timestamp)
+        : new Date();
 
-      // Process numbers if they exist
-      const numberFields: (keyof CreateQuoteDto)[] = [
-        'employeeCount',
-        'staffTotal',
-        'sumInsured',
-        'sumInsuredPerEmployee',
-        'totalSumInsured',
-        'feeIncomeEstimate'
-      ];
+      // Process vehicleValue
+      const vehicleValue = this.processNumberField(processedData.vehicleValue);
 
-      // Create the entity object with type safety
-      const prepared: Record<string, any> = {
-        reference,
-        status: 'pending'
+      // Create the entity object
+      const prepared: Partial<Quote> = {
+        firstName: processedData.firstName,
+        lastName: processedData.lastName,
+        email: processedData.email,
+        phone: processedData.phone,
+        location: processedData.location,
+        product: processedData.product,
+        selectedProduct: processedData.selectedProduct,
+        vehicleType: processedData.vehicleType,
+        vehicleValue: vehicleValue || 0,
+        registrationNumber: processedData.registrationNumber,
+        engineCapacity: processedData.engineCapacity,
+        budget: processedData.budget,
+        coverage: processedData.coverage,
+        details: processedData.details,
+        contactMethod: processedData.contactMethod,
+        bestTime: processedData.bestTime,
+        document: processedData.document,
+        terms: processedData.terms,
+        status: processedData.status || 'SUBMITTED',
+        timestamp: timestamp || new Date(),
       };
-
-      // Copy non-processed fields
-      Object.keys(processedData).forEach(key => {
-        if (!dateFields.includes(key as any) && !numberFields.includes(key as any)) {
-          prepared[key] = processedData[key];
-        }
-      });
-
-      // Process date fields
-      dateFields.forEach(field => {
-        if (field in processedData) {
-          const processed = this.processDateField(processedData[field] as string);
-          if (processed !== undefined) {
-            prepared[field] = processed;
-          }
-        }
-      });
-
-      // Process number fields
-      numberFields.forEach(field => {
-        if (field in processedData) {
-          const processed = this.processNumberField(processedData[field] as string | number);
-          if (processed !== undefined) {
-            prepared[field] = processed;
-          }
-        }
-      });
 
       const newQuote = this.quoteRepository.create(prepared);
       const saved = await this.quoteRepository.save(newQuote);
+
       return {
         success: true,
         message: 'Quote created successfully',
@@ -150,7 +131,11 @@ export class QuotesService {
       };
     } catch (error) {
       if (error instanceof NotFoundException) throw error;
-      return { success: false, message: `Failed to find quote with id ${id}`, error: error.message };
+      return {
+        success: false,
+        message: `Failed to find quote with id ${id}`,
+        error: error.message
+      };
     }
   }
 
@@ -162,59 +147,37 @@ export class QuotesService {
         throw new NotFoundException(`Quote with id ${id} not found`);
       }
 
-      // Create a copy of the DTO for processing
+      // Process the update data
       const processedData = { ...updateQuoteDto };
 
-      // Process dates if they exist
-      const dateFields: (keyof UpdateQuoteDto)[] = [
-        'date',
-        'periodFrom',
-        'periodTo',
-        'policyFrom',
-        'policyTo',
-        'dateCommencementCurrent',
-        'dateCommencementInitial'
-      ];
+      // Create the update object
+      const prepared: Partial<Quote> = {};
 
-      // Process numbers if they exist
-      const numberFields: (keyof UpdateQuoteDto)[] = [
-        'employeeCount',
-        'staffTotal',
-        'sumInsured',
-        'sumInsuredPerEmployee',
-        'totalSumInsured',
-        'feeIncomeEstimate'
-      ];
-
-      // Create the update object with type safety
-      const prepared: Record<string, any> = {};
-
-      // Copy non-processed fields
-      Object.keys(processedData).forEach(key => {
-        if (!dateFields.includes(key as any) && !numberFields.includes(key as any)) {
-          prepared[key] = processedData[key];
-        }
-      });
-
-      // Process date fields
-      dateFields.forEach(field => {
-        if (field in processedData) {
-          const processed = this.processDateField(processedData[field] as string);
-          if (processed !== undefined) {
-            prepared[field] = processed;
-          }
-        }
-      });
-
-      // Process number fields
-      numberFields.forEach(field => {
-        if (field in processedData) {
-          const processed = this.processNumberField(processedData[field] as string | number);
-          if (processed !== undefined) {
-            prepared[field] = processed;
-          }
-        }
-      });
+      // Map all the fields that might be updated
+      if (processedData.firstName !== undefined) prepared.firstName = processedData.firstName;
+      if (processedData.lastName !== undefined) prepared.lastName = processedData.lastName;
+      if (processedData.email !== undefined) prepared.email = processedData.email;
+      if (processedData.phone !== undefined) prepared.phone = processedData.phone;
+      if (processedData.location !== undefined) prepared.location = processedData.location;
+      if (processedData.product !== undefined) prepared.product = processedData.product;
+      if (processedData.selectedProduct !== undefined) prepared.selectedProduct = processedData.selectedProduct;
+      if (processedData.vehicleType !== undefined) prepared.vehicleType = processedData.vehicleType;
+      if (processedData.vehicleValue !== undefined) {
+        prepared.vehicleValue = this.processNumberField(processedData.vehicleValue) || 0;
+      }
+      if (processedData.registrationNumber !== undefined) prepared.registrationNumber = processedData.registrationNumber;
+      if (processedData.engineCapacity !== undefined) prepared.engineCapacity = processedData.engineCapacity;
+      if (processedData.budget !== undefined) prepared.budget = processedData.budget;
+      if (processedData.coverage !== undefined) prepared.coverage = processedData.coverage;
+      if (processedData.details !== undefined) prepared.details = processedData.details;
+      if (processedData.contactMethod !== undefined) prepared.contactMethod = processedData.contactMethod;
+      if (processedData.bestTime !== undefined) prepared.bestTime = processedData.bestTime;
+      if (processedData.document !== undefined) prepared.document = processedData.document;
+      if (processedData.terms !== undefined) prepared.terms = processedData.terms;
+      if (processedData.status !== undefined) prepared.status = processedData.status;
+      if (processedData.timestamp !== undefined) {
+        prepared.timestamp = this.processDateField(processedData.timestamp) || new Date();
+      }
 
       // Update and return the quote
       await this.quoteRepository.update(id, prepared);
@@ -260,6 +223,48 @@ export class QuotesService {
       return {
         success: false,
         message: `Failed to delete quote with id ${id}`,
+        error: error.message
+      };
+    }
+  }
+
+  // Additional method to find quotes by status
+  async findByStatus(status: string): Promise<ApiResponse<Quote[]>> {
+    try {
+      const quotes = await this.quoteRepository.find({
+        where: { status },
+        order: { created_at: 'DESC' }
+      });
+      return {
+        success: true,
+        message: `Quotes with status '${status}' retrieved successfully`,
+        data: quotes
+      };
+    } catch (error) {
+      return {
+        success: false,
+        message: `Failed to retrieve quotes with status '${status}'`,
+        error: error.message
+      };
+    }
+  }
+
+  // Additional method to find quotes by product type
+  async findByProduct(product: string): Promise<ApiResponse<Quote[]>> {
+    try {
+      const quotes = await this.quoteRepository.find({
+        where: { product },
+        order: { created_at: 'DESC' }
+      });
+      return {
+        success: true,
+        message: `Quotes for product '${product}' retrieved successfully`,
+        data: quotes
+      };
+    } catch (error) {
+      return {
+        success: false,
+        message: `Failed to retrieve quotes for product '${product}'`,
         error: error.message
       };
     }
