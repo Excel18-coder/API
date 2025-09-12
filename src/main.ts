@@ -14,9 +14,9 @@ import { AuthModule } from './auth/auth.module';
 async function bootstrap() {
   const app = await NestFactory.create<NestExpressApplication>(AppModule, {
     rawBody: true,
+    cors: false,
   });
 
-  // Enable validation pipe with detailed errors
   app.useGlobalPipes(new ValidationPipe({
     transform: true,
     whitelist: true,
@@ -26,7 +26,6 @@ async function bootstrap() {
     },
   }));
 
-  // Enable Helmet for security
   app.use(
     helmet({
       contentSecurityPolicy: {
@@ -40,27 +39,19 @@ async function bootstrap() {
       },
     }),
   );
-  // Enable CORS
-  // Enable CORS
-  app.enableCors({
-    origin: ['http://localhost:5173', 'https://gallo-front.vercel.app/'], // Allow all origins - adjust as needed for production
-    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
-    allowedHeaders: ['Content-Type', 'Accept', 'Authorization'],
-    credentials: true,
-  });
-  // enable global validation pipes
+
   app.useGlobalPipes(
     new ValidationPipe({
-      whitelist: true, // Strip properties that don't have decorators
-      forbidNonWhitelisted: true, // Throw error if non-whitelisted properties are present
-      transform: true, // Transform payloads to DTO instances
+      whitelist: true, 
+      forbidNonWhitelisted: true, 
+      transform: true, 
       transformOptions: {
-        enableImplicitConversion: true, // Allow implicit type conversion
+        enableImplicitConversion: true, 
       },
     }),
   );
 
-  // Use global exception filter to handle all errors gracefully
+
   app.useGlobalFilters(new AllExceptionsFilter());
 
   // api versioning
@@ -68,7 +59,6 @@ async function bootstrap() {
   // swagger documentation
   const config = new DocumentBuilder()
     .setTitle('Gallo API')
-  
     .setVersion('1.0')
     .addBearerAuth()
     .addServer('http://localhost:8000', 'Local Development Server')
@@ -92,13 +82,11 @@ async function bootstrap() {
       .swagger-ui .info { margin-bottom: 20px; }
     `,
     customSiteTitle: 'Olive Groceries API Documentation',
-    // customfavIcon: 'https://example.com/favicon.ico', // Replace with your favicon URL
+
   });
 
-  // Serve static files from uploads directory
   app.use('/uploads', express.static(join(__dirname, '..', 'uploads')));
 
-  // await app.listen(process.env.PORT ?? 8000);
   const configService = app.get(ConfigService);
   const PORT = configService.get('PORT') || 8000;
   await app.listen(PORT);
