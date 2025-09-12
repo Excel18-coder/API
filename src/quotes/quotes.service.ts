@@ -57,8 +57,7 @@ export class QuotesService {
         ? this.processDateField(processedData.timestamp)
         : new Date();
 
-      // Process vehicleValue
-      const vehicleValue = this.processNumberField(processedData.vehicleValue);
+      
 
       // Create the entity object
       const prepared: Partial<Quote> = {
@@ -69,10 +68,7 @@ export class QuotesService {
         location: processedData.location,
         product: processedData.product,
         selectedProduct: processedData.selectedProduct,
-        vehicleType: processedData.vehicleType,
-        vehicleValue: vehicleValue || 0,
-        registrationNumber: processedData.registrationNumber,
-        engineCapacity: processedData.engineCapacity,
+      
         budget: processedData.budget,
         coverage: processedData.coverage,
         details: processedData.details,
@@ -161,12 +157,12 @@ export class QuotesService {
       if (processedData.location !== undefined) prepared.location = processedData.location;
       if (processedData.product !== undefined) prepared.product = processedData.product;
       if (processedData.selectedProduct !== undefined) prepared.selectedProduct = processedData.selectedProduct;
-      if (processedData.vehicleType !== undefined) prepared.vehicleType = processedData.vehicleType;
-      if (processedData.vehicleValue !== undefined) {
-        prepared.vehicleValue = this.processNumberField(processedData.vehicleValue) || 0;
-      }
-      if (processedData.registrationNumber !== undefined) prepared.registrationNumber = processedData.registrationNumber;
-      if (processedData.engineCapacity !== undefined) prepared.engineCapacity = processedData.engineCapacity;
+      // if (processedData.vehicleType !== undefined) prepared.vehicleType = processedData.vehicleType;
+      // if (processedData.vehicleValue !== undefined) {
+        // prepared.vehicleValue = this.processNumberField(processedData.vehicleValue) || 0;
+      // }
+      // if (processedData.registrationNumber !== undefined) prepared.registrationNumber = processedData.registrationNumber;
+      // if (processedData.engineCapacity !== undefined) prepared.engineCapacity = processedData.engineCapacity;
       if (processedData.budget !== undefined) prepared.budget = processedData.budget;
       if (processedData.coverage !== undefined) prepared.coverage = processedData.coverage;
       if (processedData.details !== undefined) prepared.details = processedData.details;

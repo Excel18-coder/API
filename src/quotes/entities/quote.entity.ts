@@ -28,25 +28,25 @@ export class Quote {
     @Column({ length: 255 })
     selectedProduct: string;
 
-    // Vehicle Information - Made optional
-    @Column({ length: 100, nullable: true })
-    vehicleType?: string;
+    // // Vehicle Information - Made optional
+    // @Column({ length: 100, nullable: true })
+    // vehicleType?: string;
 
-    @Column({ type: 'decimal', precision: 10, scale: 2, nullable: true })
-    vehicleValue?: number;
+    // @Column({ type: 'decimal', precision: 10, scale: 2, nullable: true })
+    // vehicleValue?: number;
 
-    @Column({ length: 100, nullable: true })
-    registrationNumber?: string;
+    // @Column({ length: 100, nullable: true })
+    // registrationNumber?: string;
 
-    @Column({ length: 50, nullable: true })
-    engineCapacity?: string;
+    // @Column({ length: 50, nullable: true })
+    // engineCapacity?: string;
 
-    // Property Information - Added as optional fields
-    @Column({ length: 100, nullable: true })
-    propertyType?: string;
+    // // Property Information - Added as optional fields
+    // @Column({ length: 100, nullable: true })
+    // propertyType?: string;
 
-    @Column({ length: 255, nullable: true })
-    propertyValue?: string;
+    // @Column({ length: 255, nullable: true })
+    // propertyValue?: string;
 
     @Column({ length: 100, nullable: true })
     constructionType?: string;

@@ -33,35 +33,35 @@ export class CreateQuoteDto {
     selectedProduct: string;
 
 
-    @IsString()
-    @IsOptional()
-    vehicleType?: string;
+    // @IsString()
+    // @IsOptional()
+    // vehicleType?: string;
 
-    @Transform(({ value }) => {
-        if (typeof value === 'string') {
-            return value.trim() === '' ? null : parseFloat(value) || null;
-        }
-        return typeof value === 'number' ? value : null;
-    })
-    @IsNumber()
-    @IsOptional()
-    vehicleValue?: number;
+    // @Transform(({ value }) => {
+    //     if (typeof value === 'string') {
+    //         return value.trim() === '' ? null : parseFloat(value) || null;
+    //     }
+    //     return typeof value === 'number' ? value : null;
+    // })
+    // @IsNumber()
+    // @IsOptional()
+    // vehicleValue?: number;
 
-    @IsString()
-    @IsOptional()
-    registrationNumber?: string;
+    // @IsString()
+    // @IsOptional()
+    // registrationNumber?: string;
 
-    @IsString()
-    @IsOptional()
-    engineCapacity?: string;
+    // @IsString()
+    // @IsOptional()
+    // engineCapacity?: string;
 
-    @IsString()
-    @IsOptional()
-    propertyType?: string;
+    // @IsString()
+    // @IsOptional()
+    // propertyType?: string;
 
-    @IsString()
-    @IsOptional()
-    propertyValue?: string;
+    // @IsString()
+    // @IsOptional()
+    // propertyValue?: string;
 
     @IsString()
     @IsOptional()
