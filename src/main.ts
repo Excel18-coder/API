@@ -43,7 +43,7 @@ async function bootstrap() {
   // Enable CORS
   // Enable CORS
   app.enableCors({
-    origin: ['*', 'https://gallo-front.vercel.app/'], // Allow all origins - adjust as needed for production
+    origin: ['http://localhost:5173', 'https://gallo-front.vercel.app/'], // Allow all origins - adjust as needed for production
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
     allowedHeaders: ['Content-Type', 'Accept', 'Authorization'],
     credentials: true,

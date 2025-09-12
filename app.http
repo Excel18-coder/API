@@ -277,3 +277,38 @@ Content-Type: application/json
 }
 ### delete a payment
 DELETE {{url}}/payments/1
+
+
+
+
+
+
+
+### seed all data
+@prodUrl = https://gallo-api.onrender.com/api/v1
+POST {{prodUrl}}/quotes
+Content-Type: application/json
+
+
+{
+    "firstName": "Aiko",
+    "lastName": "Williamson",
+    "email": "cijulavu@mailinator.com",
+    "phone": "+1 (219) 859-8798",
+    "location": "Voluptatem officia s",
+    "product": "Fire Insurance Proposal Form",
+    "propertyType": "",
+    "propertyValue": "",
+    "constructionType": "",
+    "occupancy": "",
+    "budget": "50k-100k",
+    "coverage": "2-years",
+    "details": "Aliquip asperiores n",
+    "contactMethod": "whatsapp",
+    "bestTime": "afternoon",
+    "document": {},
+    "terms": true,
+    "selectedProduct": "Fire Insurance Proposal Form",
+    "status": "SUBMITTED",
+    "timestamp": "2025-09-12T14:34:06.030Z"
+}
