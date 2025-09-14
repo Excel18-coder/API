@@ -14,7 +14,7 @@ import { AuthModule } from './auth/auth.module';
 async function bootstrap() {
   const app = await NestFactory.create<NestExpressApplication>(AppModule, {
     rawBody: true,
-    cors: false, 
+    cors: false,
   });
 
   app.use((req, res, next) => {
@@ -61,11 +61,11 @@ async function bootstrap() {
 
   app.useGlobalPipes(
     new ValidationPipe({
-      whitelist: true, 
-      forbidNonWhitelisted: true, 
-      transform: true, 
+      whitelist: true,
+      forbidNonWhitelisted: true,
+      transform: true,
       transformOptions: {
-        enableImplicitConversion: true, 
+        enableImplicitConversion: true,
       },
     }),
   );
@@ -77,6 +77,7 @@ async function bootstrap() {
   // swagger documentation
   const config = new DocumentBuilder()
     .setTitle('Gallo API')
+
     .setVersion('1.0')
     .addBearerAuth()
     .addServer('http://localhost:8000', 'Local Development Server')
@@ -100,7 +101,7 @@ async function bootstrap() {
       .swagger-ui .info { margin-bottom: 20px; }
     `,
     customSiteTitle: 'Olive Groceries API Documentation',
-  
+
   });
 
   app.use('/uploads', express.static(join(__dirname, '..', 'uploads')));
