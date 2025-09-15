@@ -5,6 +5,8 @@ import {
 
   BeforeInsert,
   BeforeUpdate,
+  CreateDateColumn,
+  UpdateDateColumn,
 } from 'typeorm';
 import * as bcrypt from 'bcrypt';
 
@@ -45,7 +47,7 @@ export class User {
   })
   role: Role;
 
-  
+
 
   // Hooks
   @BeforeInsert()
@@ -71,8 +73,8 @@ export class User {
     if (this.name) {
       this.name = this.name.trim();
     }
-    
-  
+
+
   }
 
   // Methods
@@ -84,4 +86,11 @@ export class User {
   //   const { password, hashedRefreshToken, ...result } = this;
   //   return result;
   // }
+
+
+  @CreateDateColumn()
+  created_at: Date;
+
+  @UpdateDateColumn()
+  updated_at: Date;
 }

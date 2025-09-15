@@ -1,5 +1,5 @@
 import { IsNumber, IsNotEmpty, IsString, IsEmail, IsDateString, IsIn, isEnum, IsEnum, IsArray } from 'class-validator';
-import { ClaimType } from '../entities/claim.entity';
+import { ClaimType, Document } from '../entities/claim.entity';
 export class CreateClaimDto {
   // @IsNumber()
   // @IsNotEmpty()
@@ -44,7 +44,8 @@ export class CreateClaimDto {
   @IsString()
   @IsNotEmpty()
   phone: string;
+
   @IsArray()
-  supporting_documents:string[]
-  
+  supporting_documents: any
+
 }

@@ -5,7 +5,7 @@ import {
   CreateDateColumn,
   UpdateDateColumn,
 } from 'typeorm';
-export  enum claimStatus {
+export enum claimStatus {
   PENDING = 'Pending',
   APPROVED = 'Approved',
   REJECTED = 'Rejected',
@@ -25,6 +25,17 @@ export enum ClaimType {
   MOTOR_ENTERTAINMENT = 'Motor entertainment',
   MOTOR_THEFT = 'Motor theft',
 }
+
+export interface Document {
+  id: number;
+  original_name: string;
+  size: number;
+  created_at: string;
+  path?: string;
+  mime_type?: string;
+}
+
+
 
 @Entity('claims')
 export class Claim {
@@ -70,7 +81,7 @@ export class Claim {
   @UpdateDateColumn()
   updated_at: Date;
 
-  @Column("simple-array")
-  supporting_documents: string[];
+  @Column({ type: 'text', nullable: true })
+  supporting_documents: string;
+
 }
- 

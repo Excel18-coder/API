@@ -7,17 +7,14 @@ import {
   Delete,
   ParseIntPipe,
   Param,
-  Req,
-  RawBodyRequest,
-  UseInterceptors,
+
 } from '@nestjs/common';
 import { ClaimsService } from './claims.service';
 import { CreateClaimDto } from './dto/create-claim.dto';
 import { UpdateClaimDto } from './dto/update-claim.dto';
 import { Claim } from './entities/claim.entity';
-import { ApiBearerAuth, ApiConsumes } from '@nestjs/swagger';
-import { FileInterceptor } from '@nestjs/platform-express';
-import { body } from 'framer-motion/m';
+import { ApiBearerAuth } from '@nestjs/swagger';
+
 // import { RolesGuard } from 'src/auth/guards';
 // import { AtGuard } from 'src/auth/token/token.guard';
 
@@ -36,15 +33,11 @@ export class ClaimsController {
   constructor(private readonly claimsService: ClaimsService) { }
   // create claim
   @Post()
-  @UseInterceptors(FileInterceptor('file')) // <-- key must match your FormData key
-  @ApiConsumes('multipart/form-data')
-  
+
   create(
-    @Req() req: RawBodyRequest<Request>,
- 
     @Body() createClaimDto: CreateClaimDto
   ): Promise<ApiResponse<Claim>> {
-    console.log('body:', { createClaimDto }); // will now contain form fields
+    console.dir(createClaimDto, { depth: null }) // will now contain form fields
     // return { success: true, data: { file, body } };
     return this.claimsService.createClaim(createClaimDto)
   }
@@ -55,7 +48,7 @@ export class ClaimsController {
   }
   // get claim by id
   @Get(':id')
-  getClaimById(@Body('id') id: number): Promise<ApiResponse<Claim>> {
+  getClaimById(@Param('id') id: number): Promise<ApiResponse<Claim>> {
     return this.claimsService.getClaimById(id);
   }
   // update claim by id

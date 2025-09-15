@@ -22,6 +22,8 @@ import { OutsourcingRequestsModule } from './outsourcing_requests/outsourcing_re
 import { PaymentsModule } from './payments/payments.module';
 import { BookingConsultantsModule } from './booking-consultants/booking-consultants.module';
 
+import { DashboardModule } from './dashboard/dashboard.module';
+
 @Module({
   imports: [
     UsersModule,
@@ -53,6 +55,8 @@ import { BookingConsultantsModule } from './booking-consultants/booking-consulta
     PaymentsModule,
 
     BookingConsultantsModule,
+
+    DashboardModule,
   ],
   controllers: [AppController],
   providers: [
@@ -64,4 +68,4 @@ import { BookingConsultantsModule } from './booking-consultants/booking-consulta
 
   ],
 })
-export class AppModule {}
+export class AppModule { }

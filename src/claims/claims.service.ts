@@ -30,7 +30,7 @@ export class ClaimsService {
     try {
       const preparedClaim: Partial<Claim> = {
         ...createClaimDto,
-        // Ensure types align with entity
+        supporting_documents: JSON.stringify(createClaimDto.supporting_documents),
         incident_date: new Date(createClaimDto.incident_date as unknown as string),
         phone: String(createClaimDto.phone),
       } as Partial<Claim>;
@@ -75,6 +75,7 @@ export class ClaimsService {
   async getClaimById(id: number): Promise<ApiResponse<Claim>> {
     try {
       const claim = await this.claimRepository.findOne({ where: { Id: id } });
+      console.log('Found claim:', claim);
       if (!claim) {
         throw new NotFoundException(`Claim with id ${id} not found`);
       }
