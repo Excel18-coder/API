@@ -79,7 +79,7 @@ export class Quote {
     terms: boolean;
 
     // Status and Timestamps
-    @Column({ length: 20, default: 'SUBMITTED' })
+    @Column({ length: 30, default: 'Pending' })
     status?: string;
 
     @Column({ type: 'timestamp', nullable: true })

@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, ParseIntPipe } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, ParseIntPipe, Put } from '@nestjs/common';
 import { QuotesService } from './quotes.service';
 import { CreateQuoteDto } from './dto/create-quote.dto';
 import { UpdateQuoteDto } from './dto/update-quote.dto';
@@ -30,12 +30,20 @@ export class QuotesController {
     return this.quotesService.findOne(id);
   }
 
-  @Patch(':id')
+  @Put(':id')
   update(
     @Param('id', ParseIntPipe) id: number,
     @Body() updateQuoteDto: UpdateQuoteDto,
   ): Promise<ApiResponse<Quote>> {
     return this.quotesService.update(id, updateQuoteDto);
+  }
+
+  @Put(':id/status')
+  updateStatus(
+    @Param('id', ParseIntPipe) id: number,
+    @Body() body: { status: string },
+  ): Promise<ApiResponse<Quote>> {
+    return this.quotesService.updateStatus(id, body.status);
   }
 
   @Delete(':id')

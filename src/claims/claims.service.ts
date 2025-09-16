@@ -5,7 +5,7 @@ import {
 } from '@nestjs/common';
 import { CreateClaimDto } from './dto/create-claim.dto';
 import { UpdateClaimDto } from './dto/update-claim.dto';
-import { Claim } from './entities/claim.entity';
+import { Claim, claimStatus } from './entities/claim.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 
@@ -22,7 +22,7 @@ export class ClaimsService {
   constructor(
     @InjectRepository(Claim)
     private readonly claimRepository: Repository<Claim>,
-  ) {}
+  ) { }
   // create claim
   async createClaim(
     createClaimDto: CreateClaimDto,
@@ -61,7 +61,10 @@ export class ClaimsService {
       return {
         success: true,
         message: 'Claims retrieved successfully',
-        data: claims,
+        data: claims.map(claim => ({
+          ...claim,
+          supporting_documents: claim.supporting_documents ? JSON.parse(claim.supporting_documents) : [],
+        })),
       };
     } catch (error) {
       return {
@@ -82,7 +85,7 @@ export class ClaimsService {
       return {
         success: true,
         message: 'Claim found successfully',
-        data: claim,
+        data: { ...claim, supporting_documents: claim.supporting_documents ? JSON.parse(claim.supporting_documents) : [] },
       };
     } catch (error) {
       if (error instanceof NotFoundException) {
@@ -135,6 +138,37 @@ export class ClaimsService {
       return {
         success: false,
         message: `Failed to update claim with id ${id}`,
+        error: error.message,
+      };
+    }
+  }
+
+  async updateClaimStatus(
+    id: number,
+    updateClaimDto: { status: claimStatus },
+  ): Promise<ApiResponse<Claim>> {
+    try {
+      // confirm if claim exists
+      const claim = await this.claimRepository.findOne({ where: { Id: id } });
+      if (!claim) {
+        throw new NotFoundException(`Claim with id ${id} not found`);
+      }
+      const updatedClaim = await this.claimRepository.save({
+        ...claim,
+        status: updateClaimDto.status,
+      });
+      return {
+        success: true,
+        message: 'Claim status updated successfully',
+        data: updatedClaim,
+      };
+    } catch (error) {
+      if (error instanceof NotFoundException) {
+        throw error;
+      }
+      return {
+        success: false,
+        message: `Failed to update claim status with id ${id}`,
         error: error.message,
       };
     }

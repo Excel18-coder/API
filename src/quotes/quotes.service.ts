@@ -57,7 +57,7 @@ export class QuotesService {
         ? this.processDateField(processedData.timestamp)
         : new Date();
 
-      
+
 
       // Create the entity object
       const prepared: Partial<Quote> = {
@@ -68,7 +68,7 @@ export class QuotesService {
         location: processedData.location,
         product: processedData.product,
         selectedProduct: processedData.selectedProduct,
-      
+
         budget: processedData.budget,
         coverage: processedData.coverage,
         details: processedData.details,
@@ -159,7 +159,7 @@ export class QuotesService {
       if (processedData.selectedProduct !== undefined) prepared.selectedProduct = processedData.selectedProduct;
       // if (processedData.vehicleType !== undefined) prepared.vehicleType = processedData.vehicleType;
       // if (processedData.vehicleValue !== undefined) {
-        // prepared.vehicleValue = this.processNumberField(processedData.vehicleValue) || 0;
+      // prepared.vehicleValue = this.processNumberField(processedData.vehicleValue) || 0;
       // }
       // if (processedData.registrationNumber !== undefined) prepared.registrationNumber = processedData.registrationNumber;
       // if (processedData.engineCapacity !== undefined) prepared.engineCapacity = processedData.engineCapacity;
@@ -198,6 +198,37 @@ export class QuotesService {
         error: error.message
       };
     }
+  }
+
+
+  async updateStatus(id: number, status: string) {
+    try {
+      // confirm if claim exists
+      const quote = await this.quoteRepository.findOne({ where: { id } });
+      if (!quote) {
+        throw new NotFoundException(`quote with id ${id} not found`);
+      }
+      const updatedQuote = await this.quoteRepository.save({
+        ...quote,
+        status,
+      });
+      return {
+        success: true,
+        message: 'Quote status updated successfully',
+        data: updatedQuote,
+      };
+    } catch (error) {
+      if (error instanceof NotFoundException) {
+        throw error;
+      }
+      return {
+        success: false,
+        message: `Failed to update quote status with id ${id}`,
+        error: error.message,
+      };
+    }
+
+
   }
 
   async remove(id: number): Promise<ApiResponse<void>> {

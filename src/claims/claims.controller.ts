@@ -12,7 +12,7 @@ import {
 import { ClaimsService } from './claims.service';
 import { CreateClaimDto } from './dto/create-claim.dto';
 import { UpdateClaimDto } from './dto/update-claim.dto';
-import { Claim } from './entities/claim.entity';
+import { Claim, claimStatus } from './entities/claim.entity';
 import { ApiBearerAuth } from '@nestjs/swagger';
 
 // import { RolesGuard } from 'src/auth/guards';
@@ -58,6 +58,14 @@ export class ClaimsController {
     @Body() updateClaimDto: UpdateClaimDto,
   ): Promise<ApiResponse<Claim>> {
     return this.claimsService.updateClaim(id, updateClaimDto);
+  }
+  // update claim status by id
+  @Put(':id/status')
+  async updateClaimStatus(
+    @Param('id', ParseIntPipe) id: number,
+    @Body() updateClaimDto: { status: claimStatus },
+  ): Promise<ApiResponse<Claim>> {
+    return this.claimsService.updateClaimStatus(id, updateClaimDto);
   }
 
   // delete claim by id

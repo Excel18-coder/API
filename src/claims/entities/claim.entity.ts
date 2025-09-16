@@ -6,11 +6,11 @@ import {
   UpdateDateColumn,
 } from 'typeorm';
 export enum claimStatus {
-  PENDING = 'Pending',
-  APPROVED = 'Approved',
-  REJECTED = 'Rejected',
-  IN_REVIEW = 'In Review',
-  CLOSED = 'Closed',
+  PENDING = 'pending  ',
+  APPROVED = 'approved',
+  REJECTED = 'rejected',
+  IN_REVIEW = 'in-review',
+  CLOSED = 'closed',
 }
 export enum ClaimType {
   MOTOR = 'Motor',
@@ -81,7 +81,7 @@ export class Claim {
   @UpdateDateColumn()
   updated_at: Date;
 
-  @Column({ type: 'text', nullable: true })
+  @Column({ type: 'text', nullable: true, default: null })
   supporting_documents: string;
 
 }
