@@ -17,18 +17,21 @@ export class ConsultationsService {
   constructor(
     @InjectRepository(Consultation)
     private readonly consultationRepository: Repository<Consultation>,
-  ) { }
+  ) {}
 
   async create(
     createConsultationDto: CreateConsultationDto,
   ): Promise<ApiResponse<Consultation>> {
     try {
       console.log('📋 Received consultation DTO:', createConsultationDto);
-      
+
       // Test database connection first
       try {
         const count = await this.consultationRepository.count();
-        console.log('📋 Database connection test - existing consultations count:', count);
+        console.log(
+          '📋 Database connection test - existing consultations count:',
+          count,
+        );
       } catch (dbError) {
         console.error('📋 Database connection error:', dbError);
         return {
@@ -37,13 +40,15 @@ export class ConsultationsService {
           error: dbError.message,
         };
       }
-      
+
       // Parse date and time properly
       const consultationDate = new Date(createConsultationDto.date);
-      const consultationTime = new Date(`${createConsultationDto.date}T${createConsultationDto.time}`);
-      
+      const consultationTime = new Date(
+        `${createConsultationDto.date}T${createConsultationDto.time}`,
+      );
+
       console.log('📋 Parsed dates:', { consultationDate, consultationTime });
-      
+
       const prepared: Partial<Consultation> = {
         user_id: 1, // Default user_id for now - should be from auth context
         full_name: createConsultationDto.full_name,
@@ -52,15 +57,15 @@ export class ConsultationsService {
         date: consultationDate,
         time: consultationTime,
       };
-      
+
       console.log('📋 Prepared consultation data:', prepared);
-      
+
       const newConsult = this.consultationRepository.create(prepared);
       console.log('📋 Created consultation entity:', newConsult);
-      
+
       const saved = await this.consultationRepository.save(newConsult);
       console.log('📋 Saved consultation:', saved);
-      
+
       return {
         success: true,
         message: 'Consultation created successfully',
@@ -96,7 +101,9 @@ export class ConsultationsService {
     }
   }
 
-  async testConnection(): Promise<ApiResponse<{ message: string; count: number }>> {
+  async testConnection(): Promise<
+    ApiResponse<{ message: string; count: number }> 
+  > {
     try {
       console.log('📋 Testing database connection...');
       const count = await this.consultationRepository.count();
@@ -152,7 +159,6 @@ export class ConsultationsService {
       const prepared: Partial<Consultation> = {
         full_name: updateConsultationDto.full_name ?? consultation.full_name,
         phone: updateConsultationDto.phone ?? consultation.phone,
-        
       };
       const saved = await this.consultationRepository.save({
         ...consultation,

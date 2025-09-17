@@ -17,26 +17,39 @@ async function bootstrap() {
     cors: false,
   });
 
-  app.use((req, res, next) => {
-    if (req.method === 'OPTIONS') {
-      // Set CORS headers for OPTIONS requests
-      res.header('Access-Control-Allow-Origin', '*');
-      res.header('Access-Control-Allow-Methods', 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS');
-      res.header('Access-Control-Allow-Headers', 'Content-Type, Accept, Authorization');
-      res.header('Access-Control-Max-Age', '86400'); // 24 hours
-      return res.status(200).end();
-    }
-    next();
-  });
-
-  app.useGlobalPipes(new ValidationPipe({
-    transform: true,
-    whitelist: true,
-    forbidNonWhitelisted: true,
-    transformOptions: {
-      enableImplicitConversion: true,
+  app.use(
+    (
+      req: express.Request,
+      res: express.Response,
+      next: express.NextFunction,
+    ) => {
+      if (req.method === 'OPTIONS') {
+        res.header('Access-Control-Allow-Origin', '*');
+        res.header(
+          'Access-Control-Allow-Methods',
+          'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS',
+        );
+        res.header(
+          'Access-Control-Allow-Headers',
+          'Content-Type, Accept, Authorization',
+        );
+        res.header('Access-Control-Max-Age', '86400');
+        return res.status(200).end();
+      }
+      next();
     },
-  }));
+  );
+
+  app.useGlobalPipes(
+    new ValidationPipe({
+      transform: true,
+      whitelist: true,
+      forbidNonWhitelisted: true,
+      transformOptions: {
+        enableImplicitConversion: true,
+      },
+    }),
+  );
 
   app.use(
     helmet({
@@ -54,8 +67,14 @@ async function bootstrap() {
 
   app.use((req, res, next) => {
     res.header('Access-Control-Allow-Origin', '*');
-    res.header('Access-Control-Allow-Methods', 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS');
-    res.header('Access-Control-Allow-Headers', 'Content-Type, Accept, Authorization');
+    res.header(
+      'Access-Control-Allow-Methods',
+      'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS',
+    );
+    res.header(
+      'Access-Control-Allow-Headers',
+      'Content-Type, Accept, Authorization',
+    );
     next();
   });
 
@@ -101,7 +120,6 @@ async function bootstrap() {
       .swagger-ui .info { margin-bottom: 20px; }
     `,
     customSiteTitle: 'Olive Groceries API Documentation',
-
   });
 
   app.use('/uploads', express.static(join(__dirname, '..', 'uploads')));

@@ -1,5 +1,5 @@
-import { IsNotEmpty, IsString, IsOptional, IsEnum, IsDateString } from 'class-validator';
-import { consultType } from '../entities/consultation.entity';
+import { IsNotEmpty, IsString, IsOptional, IsEnum } from 'class-validator';
+import { ConsultType } from '../entities/consultation.entity';
 
 export class CreateConsultationDto {
   @IsString()
@@ -10,9 +10,9 @@ export class CreateConsultationDto {
   @IsNotEmpty()
   phone: string;
 
-  @IsEnum(consultType)
+  @IsEnum(ConsultType)
   @IsNotEmpty()
-  consult_type: consultType;
+  consult_type: ConsultType;
 
   @IsString()
   @IsNotEmpty()
