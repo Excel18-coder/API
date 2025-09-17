@@ -1,8 +1,4 @@
-import {
-  Injectable,
-  ConflictException,
-  NotFoundException,
-} from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { CreateClaimDto } from './dto/create-claim.dto';
 import { UpdateClaimDto } from './dto/update-claim.dto';
 import { Claim, claimStatus } from './entities/claim.entity';
@@ -22,7 +18,7 @@ export class ClaimsService {
   constructor(
     @InjectRepository(Claim)
     private readonly claimRepository: Repository<Claim>,
-  ) { }
+  ) {}
   // create claim
   async createClaim(
     createClaimDto: CreateClaimDto,
@@ -30,8 +26,12 @@ export class ClaimsService {
     try {
       const preparedClaim: Partial<Claim> = {
         ...createClaimDto,
-        supporting_documents: JSON.stringify(createClaimDto.supporting_documents),
-        incident_date: new Date(createClaimDto.incident_date as unknown as string),
+        supporting_documents: JSON.stringify(
+          createClaimDto.supporting_documents,
+        ),
+        incident_date: new Date(
+          createClaimDto.incident_date as unknown as string,
+        ),
         phone: String(createClaimDto.phone),
       } as Partial<Claim>;
 
@@ -46,7 +46,10 @@ export class ClaimsService {
       return {
         success: false,
         message: 'Failed to create claim',
-        error: error.message,
+        error:
+          error instanceof Error
+            ? error.message
+            : 'An error occurred while creating claim',
       };
     }
   }
@@ -61,19 +64,20 @@ export class ClaimsService {
       return {
         success: true,
         message: 'Claims retrieved successfully',
-        data: claims.map(claim => ({
-          ...claim,
-          supporting_documents: claim.supporting_documents ? JSON.parse(claim.supporting_documents) : [],
-        })),
+        data: claims,
       };
     } catch (error) {
       return {
         success: false,
         message: 'Failed to retrieve claims',
-        error: error.message,
+        error:
+          error instanceof Error
+            ? error.message
+            : 'An error occurred while fetching claim',
       };
     }
   }
+
   // find claim by id
   async getClaimById(id: number): Promise<ApiResponse<Claim>> {
     try {
@@ -85,7 +89,7 @@ export class ClaimsService {
       return {
         success: true,
         message: 'Claim found successfully',
-        data: { ...claim, supporting_documents: claim.supporting_documents ? JSON.parse(claim.supporting_documents) : [] },
+        data: claim,
       };
     } catch (error) {
       if (error instanceof NotFoundException) {
@@ -94,10 +98,14 @@ export class ClaimsService {
       return {
         success: false,
         message: `Failed to find claim with id ${id}`,
-        error: error.message,
+        error:
+          error instanceof Error
+            ? error.message
+            : 'An error occurred while creating claim',
       };
     }
   }
+
   // update claim by id
   async updateClaim(
     id: number,
@@ -138,7 +146,10 @@ export class ClaimsService {
       return {
         success: false,
         message: `Failed to update claim with id ${id}`,
-        error: error.message,
+        error:
+          error instanceof Error
+            ? error.message
+            : 'An error occurred while creating claim',
       };
     }
   }
@@ -169,7 +180,10 @@ export class ClaimsService {
       return {
         success: false,
         message: `Failed to update claim status with id ${id}`,
-        error: error.message,
+        error:
+          error instanceof Error
+            ? error.message
+            : 'An error occurred while creating claim',
       };
     }
   }
@@ -193,7 +207,10 @@ export class ClaimsService {
       return {
         success: false,
         message: `Failed to delete claim with id ${id}`,
-        error: error.message,
+        error:
+          error instanceof Error
+            ? error.message
+            : 'An error occurred while creating claim',
       };
     }
   }

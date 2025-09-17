@@ -1,10 +1,14 @@
-import { IsNumber, IsNotEmpty, IsString, IsEmail, IsDateString, IsIn, isEnum, IsEnum, IsArray } from 'class-validator';
+import {
+  IsNumber,
+  IsNotEmpty,
+  IsString,
+  IsEmail,
+  IsDateString,
+  IsEnum,
+  IsOptional,
+} from 'class-validator';
 import { ClaimType, Document } from '../entities/claim.entity';
 export class CreateClaimDto {
-  // @IsNumber()
-  // @IsNotEmpty()
-  // user_id: number;
-
   @IsNumber()
   @IsNotEmpty()
   policy_number: number;
@@ -25,10 +29,6 @@ export class CreateClaimDto {
   @IsNotEmpty()
   description: string;
 
-  // @IsString()
-  // @IsNotEmpty()
-  // status: string;
-
   @IsEmail()
   @IsNotEmpty()
   email: string;
@@ -45,7 +45,6 @@ export class CreateClaimDto {
   @IsNotEmpty()
   phone: string;
 
-  @IsArray()
-  supporting_documents: any
-
+  @IsOptional()
+  supporting_documents: any;
 }

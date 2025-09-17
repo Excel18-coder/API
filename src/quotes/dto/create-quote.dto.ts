@@ -1,110 +1,87 @@
-import { IsString, IsNotEmpty, IsEmail, IsOptional, IsObject, IsBoolean, IsDateString, IsNumber } from 'class-validator';
+import {
+  IsString,
+  IsNotEmpty,
+  IsEmail,
+  IsOptional,
+  IsObject,
+  IsBoolean,
+  IsDateString,
+  IsNumber,
+} from 'class-validator';
 import { Transform } from 'class-transformer';
 
 export class CreateQuoteDto {
-    // Personal Information
-    @IsString()
-    @IsNotEmpty()
-    firstName: string;
+  // Personal Information
+  @IsString()
+  @IsNotEmpty()
+  firstName: string;
 
-    @IsString()
-    @IsNotEmpty()
-    lastName: string;
+  @IsString()
+  @IsNotEmpty()
+  lastName: string;
 
-    @IsEmail()
-    @IsNotEmpty()
-    email: string;
+  @IsEmail()
+  @IsNotEmpty()
+  email: string;
 
-    @IsString()
-    @IsNotEmpty()
-    phone: string;
+  @IsString()
+  @IsNotEmpty()
+  phone: string;
 
-    @IsString()
-    @IsNotEmpty()
-    location: string;
+  @IsString()
+  @IsNotEmpty()
+  location: string;
 
-    // Product Information
-    @IsString()
-    @IsNotEmpty()
-    product: string;
+  // Product Information
+  @IsString()
+  @IsNotEmpty()
+  product: string;
 
-    @IsString()
-    @IsNotEmpty()
-    selectedProduct: string;
+  @IsString()
+  @IsNotEmpty()
+  selectedProduct: string;
 
+  @IsString()
+  @IsOptional()
+  constructionType?: string;
 
-    // @IsString()
-    // @IsOptional()
-    // vehicleType?: string;
+  @IsString()
+  @IsOptional()
+  occupancy?: string;
 
-    // @Transform(({ value }) => {
-    //     if (typeof value === 'string') {
-    //         return value.trim() === '' ? null : parseFloat(value) || null;
-    //     }
-    //     return typeof value === 'number' ? value : null;
-    // })
-    // @IsNumber()
-    // @IsOptional()
-    // vehicleValue?: number;
+  // Quote Details
+  @IsString()
+  @IsNotEmpty()
+  budget: string;
 
-    // @IsString()
-    // @IsOptional()
-    // registrationNumber?: string;
+  @IsString()
+  @IsNotEmpty()
+  coverage: string;
 
-    // @IsString()
-    // @IsOptional()
-    // engineCapacity?: string;
+  @IsString()
+  @IsOptional()
+  details?: string;
 
-    // @IsString()
-    // @IsOptional()
-    // propertyType?: string;
+  @IsString()
+  @IsNotEmpty()
+  contactMethod: string;
 
-    // @IsString()
-    // @IsOptional()
-    // propertyValue?: string;
+  @IsString()
+  @IsNotEmpty()
+  bestTime: string;
 
-    @IsString()
-    @IsOptional()
-    constructionType?: string;
+  @IsOptional()
+  documents?: any;
 
-    @IsString()
-    @IsOptional()
-    occupancy?: string;
+  @IsBoolean()
+  @IsNotEmpty()
+  terms: boolean;
 
-    // Quote Details
-    @IsString()
-    @IsNotEmpty()
-    budget: string;
+  @IsString()
+  @IsOptional()
+  status?: string;
 
-    @IsString()
-    @IsNotEmpty()
-    coverage: string;
-
-    @IsString()
-    @IsOptional()
-    details?: string;
-
-    @IsString()
-    @IsNotEmpty()
-    contactMethod: string;
-
-    @IsString()
-    @IsNotEmpty()
-    bestTime: string;
-
-    @IsObject()
-    @IsOptional()
-    document?: Record<string, any>;
-
-    @IsBoolean()
-    @IsNotEmpty()
-    terms: boolean;
-
-    @IsString()
-    @IsOptional()
-    status?: string;
-
-    @IsDateString()
-    @IsOptional()
-    timestamp?: string;
+  @IsDateString()
+  @IsOptional()
+  timestamp?: string;
 }

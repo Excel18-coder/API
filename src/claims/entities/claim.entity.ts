@@ -35,8 +35,6 @@ export interface Document {
   mime_type?: string;
 }
 
-
-
 @Entity('claims')
 export class Claim {
   @PrimaryGeneratedColumn()
@@ -83,5 +81,4 @@ export class Claim {
 
   @Column({ type: 'text', nullable: true, default: null })
   supporting_documents: string;
-
 }
