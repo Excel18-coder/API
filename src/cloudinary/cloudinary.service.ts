@@ -21,6 +21,7 @@ export class CloudinaryService {
       cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
       api_key: process.env.CLOUDINARY_API_KEY,
       api_secret: process.env.CLOUDINARY_API_SECRET,
+      
     });
   }
 
@@ -28,8 +29,11 @@ export class CloudinaryService {
     return new Promise((resolve, reject) => {
       const uploadStream = cloudinary.uploader.upload_stream(
         {
-          resource_type: 'auto',
+          resource_type: 'raw',
           folder: 'claims',
+          use_filename: true,
+          unique_filename: false,
+          access_mode: 'public',
         },
         (error, result: UploadApiResponse | undefined) => {
           if (error) {

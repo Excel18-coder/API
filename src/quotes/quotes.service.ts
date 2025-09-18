@@ -17,7 +17,7 @@ export class QuotesService {
   constructor(
     @InjectRepository(Quote)
     private readonly quoteRepository: Repository<Quote>,
-  ) {}
+  ) { }
 
   private generateReference(product: string): string {
     const date = new Date();
@@ -107,7 +107,7 @@ export class QuotesService {
       return {
         success: true,
         message: 'Quotes retrieved successfully',
-        data: quotes,
+        data: quotes.map((quote) => ({ ...quote, documents: quote.documents ? JSON.parse(quote.documents) : [] })),
       };
     } catch (error) {
       return {
@@ -125,7 +125,7 @@ export class QuotesService {
       return {
         success: true,
         message: 'Quote found successfully',
-        data: quote,
+        data: { ...quote, documents: quote.documents ? JSON.parse(quote.documents) : [] }
       };
     } catch (error) {
       if (error instanceof NotFoundException) throw error;
@@ -285,7 +285,7 @@ export class QuotesService {
       return {
         success: true,
         message: `Quotes with status '${status}' retrieved successfully`,
-        data: quotes,
+        data: quotes.map((quote) => ({ ...quote, documents: quote.documents ? JSON.parse(quote.documents) : [] })),
       };
     } catch (error) {
       return {
@@ -306,7 +306,7 @@ export class QuotesService {
       return {
         success: true,
         message: `Quotes for product '${product}' retrieved successfully`,
-        data: quotes,
+        data: quotes.map((quote) => ({ ...quote, documents: quote.documents ? JSON.parse(quote.documents) : [] }))
       };
     } catch (error) {
       return {

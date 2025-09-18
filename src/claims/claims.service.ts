@@ -18,7 +18,7 @@ export class ClaimsService {
   constructor(
     @InjectRepository(Claim)
     private readonly claimRepository: Repository<Claim>,
-  ) {}
+  ) { }
   // create claim
   async createClaim(
     createClaimDto: CreateClaimDto,
@@ -64,7 +64,7 @@ export class ClaimsService {
       return {
         success: true,
         message: 'Claims retrieved successfully',
-        data: claims,
+        data: claims.map((claim) => ({ ...claim, supporting_documents: JSON.parse(claim.supporting_documents) })),
       };
     } catch (error) {
       return {
@@ -89,7 +89,7 @@ export class ClaimsService {
       return {
         success: true,
         message: 'Claim found successfully',
-        data: claim,
+        data: { ...claim, supporting_documents: JSON.parse(claim.supporting_documents) }
       };
     } catch (error) {
       if (error instanceof NotFoundException) {
