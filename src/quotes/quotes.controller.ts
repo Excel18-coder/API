@@ -120,7 +120,7 @@ export class QuotesController {
     return this.quotesService.create(quoteData);
   }
   @Get()
-  findAll(): Promise<ApiResponse<Quote[]>> {
+  findAll(): Promise<ApiResponse<(Omit<Quote, "documents"> & { documents: any[]; })[]>> {
     return this.quotesService.findAll();
   }
 
