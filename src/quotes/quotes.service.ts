@@ -98,8 +98,7 @@ export class QuotesService {
       };
     }
   }
-
-  async findAll(): Promise<ApiResponse<Omit<Quote, "document"> & { document: any[] }[]>> {
+  async findAll(): Promise<ApiResponse<(Omit<Quote, "documents"> & { documents: any[] })[]>> {
     try {
       const quotes = await this.quoteRepository.find()
       const processedQuotes = quotes.map((quote) => {
@@ -109,7 +108,6 @@ export class QuotesService {
             parsedDocuments = JSON.parse(quote.documents) as unknown as any[];
           } catch (parseError) {
             console.warn(`Failed to parse documents for quote ${quote.id}:`, parseError.message);
-
             parsedDocuments = [];
           }
         }
@@ -134,7 +132,6 @@ export class QuotesService {
       };
     }
   }
-
   async findOne(id: number): Promise<ApiResponse<Quote>> {
     try {
       const quote = await this.quoteRepository.findOne({ where: { id } });
