@@ -76,7 +76,7 @@ export class QuotesService {
         details: processedData.details,
         contactMethod: processedData.contactMethod,
         bestTime: processedData.bestTime,
-        documents: processedData.documents as string,
+        documents: JSON.stringify(processedData.documents),
         terms: processedData.terms,
         status: processedData.status || 'SUBMITTED',
         timestamp: timestamp || new Date(),
@@ -101,14 +101,30 @@ export class QuotesService {
 
   async findAll(): Promise<ApiResponse<Quote[]>> {
     try {
-      const quotes = await this.quoteRepository.find({
-        order: { created_at: 'DESC' },
+      const processedQuotes = quotes.map((quote) => {
+        let parsedDocuments = [];
+        if (quote.documents) {
+          try {
+            parsedDocuments = JSON.parse(quote.documents);
+          } catch (parseError) {
+            console.warn(`Failed to parse documents for quote ${quote.id}:`, parseError.message);
+
+            parsedDocuments = [];
+          }
+        }
+
+        return {
+          ...quote,
+          documents: parsedDocuments
+        };
       });
+
       return {
         success: true,
         message: 'Quotes retrieved successfully',
-        data: quotes.map((quote) => ({ ...quote, documents: quote.documents ? JSON.parse(quote.documents) : [] })),
+        data: processedQuotes,
       };
+
     } catch (error) {
       return {
         success: false,
@@ -122,6 +138,7 @@ export class QuotesService {
     try {
       const quote = await this.quoteRepository.findOne({ where: { id } });
       if (!quote) throw new NotFoundException(`Quote with id ${id} not found`);
+      
       return {
         success: true,
         message: 'Quote found successfully',

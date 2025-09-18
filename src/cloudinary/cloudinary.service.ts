@@ -31,8 +31,6 @@ export class CloudinaryService {
         {
           resource_type: 'auto',
           folder: 'claims',
-          use_filename: true,
-          unique_filename: false,
           access_mode: 'public',
         },
         (error, result: UploadApiResponse | undefined) => {
@@ -44,7 +42,7 @@ export class CloudinaryService {
             );
           } else if (result) {
             resolve({
-              original_name: result.original_filename,
+              original_name: result?.original_filename ?? "Uploaded_file",
               size: result.bytes,
               path: result.secure_url,
               mime_type: result.format,

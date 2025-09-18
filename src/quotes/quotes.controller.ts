@@ -35,7 +35,7 @@ export class QuotesController {
   constructor(
     private readonly quotesService: QuotesService,
     private readonly cloudinaryService: CloudinaryService,
-  ) {}
+  ) { }
 
   @Post()
   @ApiConsumes('multipart/form-data')
@@ -96,7 +96,7 @@ export class QuotesController {
       try {
         const uploadResults = await this.cloudinaryService.uploadFiles(files);
         uploadedDocuments = uploadResults.map((result) => ({
-          original_name: result.original_name,
+          original_name: result?.original_name ?? "Uploaded_file",
           size: result.size,
           created_at: new Date().toISOString(),
           path: result.path,
