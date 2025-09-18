@@ -99,13 +99,14 @@ export class QuotesService {
     }
   }
 
-  async findAll(): Promise<ApiResponse<Quote[]>> {
+  async findAll(): Promise<ApiResponse<Omit<Quote, "document"> & { document: any[] }[]>> {
     try {
+      const quotes = await this.quoteRepository.find()
       const processedQuotes = quotes.map((quote) => {
-        let parsedDocuments = [];
+        let parsedDocuments: any[] = [];
         if (quote.documents) {
           try {
-            parsedDocuments = JSON.parse(quote.documents);
+            parsedDocuments = JSON.parse(quote.documents) as unknown as any[];
           } catch (parseError) {
             console.warn(`Failed to parse documents for quote ${quote.id}:`, parseError.message);
 
@@ -138,7 +139,6 @@ export class QuotesService {
     try {
       const quote = await this.quoteRepository.findOne({ where: { id } });
       if (!quote) throw new NotFoundException(`Quote with id ${id} not found`);
-      
       return {
         success: true,
         message: 'Quote found successfully',
