@@ -38,6 +38,14 @@ export class DiasporaRequestsController {
     return this.diasporaRequestsService.update(id, updateDiasporaRequestDto);
   }
 
+  @Put(':id/status')
+  updateStatus(
+    @Param('id', ParseIntPipe) id: number,
+    @Body() updateStatus: { status: string },
+  ): Promise<ApiResponse<DiasporaRequest>> {
+    return this.diasporaRequestsService.updateStatus(id, updateStatus.status);
+  }
+
   @Delete(':id')
   remove(@Param('id', ParseIntPipe) id: number): Promise<ApiResponse<null>> {
     return this.diasporaRequestsService.remove(id);

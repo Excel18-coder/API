@@ -13,7 +13,7 @@ interface ApiResponse<T = any> {
 
 @Controller('outsourcing-requests')
 export class OutsourcingRequestsController {
-  constructor(private readonly outsourcingRequestsService: OutsourcingRequestsService) {}
+  constructor(private readonly outsourcingRequestsService: OutsourcingRequestsService) { }
 
   @Post()
   create(@Body() createOutsourcingRequestDto: CreateOutsourcingRequestDto): Promise<ApiResponse<OutsourcingRequest>> {
@@ -36,6 +36,14 @@ export class OutsourcingRequestsController {
     @Body() updateOutsourcingRequestDto: UpdateOutsourcingRequestDto,
   ): Promise<ApiResponse<OutsourcingRequest>> {
     return this.outsourcingRequestsService.update(id, updateOutsourcingRequestDto);
+  }
+
+  @Put(':id/status')
+  updateStatus(
+    @Param('id', ParseIntPipe) id: number,
+    @Body() updateStatus: { status: string },
+  ): Promise<ApiResponse<OutsourcingRequest>> {
+    return this.outsourcingRequestsService.updateStatus(id, updateStatus.status);
   }
 
   @Delete(':id')

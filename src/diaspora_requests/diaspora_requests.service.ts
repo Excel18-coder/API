@@ -17,7 +17,7 @@ export class DiasporaRequestsService {
   constructor(
     @InjectRepository(DiasporaRequest)
     private readonly diasporaRepository: Repository<DiasporaRequest>,
-  ) {}
+  ) { }
 
   async create(
     createDiasporaRequestDto: CreateDiasporaRequestDto,
@@ -63,6 +63,18 @@ export class DiasporaRequestsService {
     } catch (error) {
       if (error instanceof NotFoundException) throw error;
       return { success: false, message: `Failed to update diaspora request with id ${id}`, error: error.message };
+    }
+  }
+  async updateStatus(id: number, status: string): Promise<ApiResponse<DiasporaRequest>> {
+    try {
+      const item = await this.diasporaRepository.findOne({ where: { id } });
+      if (!item) throw new NotFoundException(`Diaspora request with id ${id} not found`);
+      item.status = status;
+      const saved = await this.diasporaRepository.save(item);
+      return { success: true, message: 'Diaspora request status updated successfully', data: saved };
+    } catch (error) {
+      if (error instanceof NotFoundException) throw error;
+      return { success: false, message: `Failed to update status of diaspora request with id ${id}`, error: error.message };
     }
   }
 

@@ -1,9 +1,9 @@
 import { IsNumber, IsNotEmpty, IsString, IsEmail, IsOptional } from 'class-validator';
 
 export class CreateDiasporaRequestDto {
-  @IsNumber()
-  @IsNotEmpty()
-  user_id: number;
+  // @IsNumber()
+  // @IsNotEmpty()
+  // user_id: number;
 
   @IsString()
   @IsNotEmpty()
@@ -26,6 +26,13 @@ export class CreateDiasporaRequestDto {
   details: string;
 
   @IsString()
-  @IsOptional()
-  status?: string;
+  @IsNotEmpty()
+  consult_time: string;
+
+  @IsNotEmpty()
+  amount: number;
+
+  // @IsString()
+  // @IsOptional()
+  // status?: string;
 }

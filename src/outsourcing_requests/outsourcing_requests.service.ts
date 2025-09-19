@@ -17,7 +17,7 @@ export class OutsourcingRequestsService {
   constructor(
     @InjectRepository(OutsourcingRequest)
     private readonly outsourcingRepository: Repository<OutsourcingRequest>,
-  ) {}
+  ) { }
 
   async create(
     createOutsourcingRequestDto: CreateOutsourcingRequestDto,
@@ -63,6 +63,19 @@ export class OutsourcingRequestsService {
     } catch (error) {
       if (error instanceof NotFoundException) throw error;
       return { success: false, message: `Failed to update outsourcing request with id ${id}`, error: error.message };
+    }
+  }
+
+  async updateStatus(id: number, status: string): Promise<ApiResponse<OutsourcingRequest>> {
+    try {
+      const item = await this.outsourcingRepository.findOne({ where: { id } });
+      if (!item) throw new NotFoundException(`Outsourcing request with id ${id} not found`);
+      item.status = status;
+      const saved = await this.outsourcingRepository.save(item);
+      return { success: true, message: 'Outsourcing request status updated successfully', data: saved };
+    } catch (error) {
+      if (error instanceof NotFoundException) throw error;
+      return { success: false, message: `Failed to update status of outsourcing request with id ${id}`, error: error.message };
     }
   }
 
