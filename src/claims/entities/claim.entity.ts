@@ -11,6 +11,7 @@ export enum claimStatus {
   REJECTED = 'rejected',
   IN_REVIEW = 'in-review',
   CLOSED = 'closed',
+  PROCCESSING = 'processing'
 }
 export enum ClaimType {
   MOTOR = 'Motor',
