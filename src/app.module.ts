@@ -23,6 +23,7 @@ import { PaymentsModule } from './payments/payments.module';
 import { BookingConsultantsModule } from './booking-consultants/booking-consultants.module';
 
 import { DashboardModule } from './dashboard/dashboard.module';
+import { BasedConsultationModule } from './based-consultation/based-consultation.module';
 
 @Module({
   imports: [
@@ -57,6 +58,8 @@ import { DashboardModule } from './dashboard/dashboard.module';
     BookingConsultantsModule,
 
     DashboardModule,
+
+    BasedConsultationModule,
   ],
   controllers: [AppController],
   providers: [

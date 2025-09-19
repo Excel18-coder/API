@@ -2,7 +2,7 @@ import { Controller, Get, Post, Body, Patch, Param, Delete, ParseIntPipe, Put } 
 import { ConsultationsService } from './consultations.service';
 import { CreateConsultationDto } from './dto/create-consultation.dto';
 import { UpdateConsultationDto } from './dto/update-consultation.dto';
-import { Consultation } from './entities/consultation.entity';
+import { Consultation, ConsultationStatus } from './entities/consultation.entity';
 
 interface ApiResponse<T = any> {
   success: boolean;
@@ -13,7 +13,7 @@ interface ApiResponse<T = any> {
 
 @Controller('consultations')
 export class ConsultationsController {
-  constructor(private readonly consultationsService: ConsultationsService) {}
+  constructor(private readonly consultationsService: ConsultationsService) { }
 
   @Post()
   create(@Body() createConsultationDto: CreateConsultationDto): Promise<ApiResponse<Consultation>> {
@@ -44,6 +44,13 @@ export class ConsultationsController {
     @Body() updateConsultationDto: UpdateConsultationDto,
   ): Promise<ApiResponse<Consultation>> {
     return this.consultationsService.update(id, updateConsultationDto);
+  }
+  @Put(':id/status')
+  updateStatus(
+    @Param('id', ParseIntPipe) id: number,
+    @Body() updatedStatus: { status: ConsultationStatus },
+  ): Promise<ApiResponse<Consultation>> {
+    return this.consultationsService.updateStatus(id, updatedStatus.status);
   }
 
   @Delete(':id')

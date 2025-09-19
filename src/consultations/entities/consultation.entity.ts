@@ -7,10 +7,12 @@ import {
 } from 'typeorm';
 
 export enum ConsultationStatus {
-  PENDING = 'Pending',
-  CONFIRMED = 'Confirmed',
-  COMPLETED = 'Completed',
-  CANCELLED = 'Cancelled',
+  PENDING = 'pending',
+  CONFIRMED = 'confirmed',
+  COMPLETED = 'completed',
+  CANCELLED = 'cancelled',
+  CONTACTED = 'contacted',
+  SCHEDULED = 'scheduled'
 }
 
 export enum ConsultType {

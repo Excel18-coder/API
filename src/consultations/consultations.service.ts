@@ -3,7 +3,7 @@ import { CreateConsultationDto } from './dto/create-consultation.dto';
 import { UpdateConsultationDto } from './dto/update-consultation.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { Consultation } from './entities/consultation.entity';
+import { Consultation, ConsultationStatus } from './entities/consultation.entity';
 
 interface ApiResponse<T = any> {
   success: boolean;
@@ -17,7 +17,7 @@ export class ConsultationsService {
   constructor(
     @InjectRepository(Consultation)
     private readonly consultationRepository: Repository<Consultation>,
-  ) {}
+  ) { }
 
   async create(
     createConsultationDto: CreateConsultationDto,
@@ -102,7 +102,7 @@ export class ConsultationsService {
   }
 
   async testConnection(): Promise<
-    ApiResponse<{ message: string; count: number }> 
+    ApiResponse<{ message: string; count: number }>
   > {
     try {
       console.log('📋 Testing database connection...');
@@ -178,7 +178,22 @@ export class ConsultationsService {
       };
     }
   }
-
+  async updateStatus(id: number, status: ConsultationStatus): Promise<ApiResponse<Consultation>> {
+    const consultation = await this.consultationRepository.findOne({
+      where: { id },
+    });
+    if (!consultation)
+      throw new NotFoundException(`Consultation with id ${id} not found`);
+    const updatedStatus = await this.consultationRepository.save({
+      ...consultation,
+      status
+    })
+    return {
+      success: true,
+      message: 'Consultation updated successfully',
+      data: updatedStatus,
+    };
+  }
   async remove(id: number): Promise<ApiResponse<null>> {
     try {
       const consultation = await this.consultationRepository.findOne({
